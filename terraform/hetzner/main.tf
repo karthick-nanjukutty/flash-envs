@@ -16,20 +16,19 @@ module "k3s_cluster" {
 
   hcloud_token        = var.hcloud_token
   ssh_key_fingerprint = var.ssh_key_fingerprint
-  master_count        = 1
-  worker_count        = 1
+  ssh_private_key_path = var.ssh_private_key_path
+  master_count        = var.master_count
+  worker_count        = var.worker_count
   location            = var.location
-  master_type         = var.server_type
-  worker_type         = var.server_type
+  master_type         = var.master_type
+  worker_type         = var.worker_type
   cluster_name        = var.cluster_name
 }
 
-output "master_ip" {
-  description = "Public IP address of the master node"
-  value       = module.k3s_cluster.master_ip
-}
+resource "null_resource" "wait_for_kubeconfig" {
+  depends_on = [module.k3s_cluster]
 
-output "worker_ips" {
-  description = "Public IP addresses of the worker nodes"
-  value       = module.k3s_cluster.worker_ips
+  provisioner "local-exec" {
+    command = "while [ ! -f ${path.module}/../../modules/hetzner/kubeconfig ]; do sleep 5; done"
+  }
 }

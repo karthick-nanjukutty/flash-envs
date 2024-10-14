@@ -8,9 +8,8 @@ output "worker_ips" {
   value       = hcloud_server.worker[*].ipv4_address
 }
 
-output "k3s_token" {
-  description = "K3s token"
-  value       = random_password.k3s_token.result
+output "kubeconfig" {
+  description = "Kubeconfig for the K3s cluster"
+  value       = null_resource.k3s_installer[0].id != "" ? file("${path.module}/kubeconfig") : ""
   sensitive   = true
 }
-

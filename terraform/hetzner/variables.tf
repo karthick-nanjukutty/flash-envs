@@ -24,4 +24,31 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "master_count" {
+  description = "Number of master nodes"
+  type        = number
+  default     = 1
+}
+
+variable "worker_count" {
+  description = "Number of worker nodes"
+  type        = number
+  default     = 1
+}
+
+variable "master_type" {
+  description = "Server type for master nodes"
+  type        = string
+}
+
+variable "worker_type" {
+  description = "Server type for worker nodes"
+  type        = string
+}
+
+variable "ssh_private_key_path" {
+  description = "Path to the SSH private key"
+  type        = string
+}
+
 # Add any other variables that are in your terraform.tfvars file but not declared here
